@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Grid3x3Icon } from "./components/Grid3x3Icon";
+import { Grid3x3Icon } from "./components/icons/Grid3x3Icon";
 import { MenuTrigger } from "./components/MenuTrigger";
 import { MenuContent } from "./components/MenuContent";
 import { Application } from "./types";

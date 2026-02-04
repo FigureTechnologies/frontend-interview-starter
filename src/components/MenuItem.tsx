@@ -1,4 +1,4 @@
-import { CheckIcon } from './CheckIcon';
+import { CheckIcon } from './icons/CheckIcon';
 
 interface MenuItemProps {
   id: string;

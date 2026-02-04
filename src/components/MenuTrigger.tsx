@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ChevronRightIcon } from "./ChevronRightIcon";
+import { ChevronRightIcon } from "./icons/ChevronRightIcon";
 
 interface MenuTriggerProps {
   children: ReactNode;
