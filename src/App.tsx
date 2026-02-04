@@ -51,9 +51,11 @@ export function App() {
             Applications
           </MenuTrigger>
         </div>
-        <div className="col-span-2 h-96 bg-white border-4 border-l-0 p-6 flex justify-center items-center">
+        <div className="col-span-2 h-96 bg-white border-4 border-l-0 p-6 flex justify-center items-start">
           {isMenuOpen && (
-            <MenuContent items={data} loading={loading} error={error} />
+            <div className="w-full h-full overflow-y-auto p-2 animate-[fadeIn_0.2s_ease-out]">
+              <MenuContent items={data} loading={loading} error={error} onClick={() => console.log('open')}/>
+            </div>
           )}
         </div>
       </div>
