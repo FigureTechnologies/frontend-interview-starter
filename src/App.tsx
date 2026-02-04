@@ -12,7 +12,7 @@ export function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selected, setSelected] = useState(localStorage.getItem('selectedId') || '');
-  const selectedApplication = data?.filter(item => item.id === selected).map(item => item.name);
+  const selectedApplication = data?.find(item => item.id === selected)?.name;
   const menuRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<HTMLElement>(null);
 
@@ -23,7 +23,7 @@ export function App() {
         const response = await fetch('/api/v1/applications');
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Failed to fetch applications');
         }
 
         const responseData = await response.json();
