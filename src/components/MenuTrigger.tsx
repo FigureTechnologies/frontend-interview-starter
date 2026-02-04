@@ -6,6 +6,7 @@ interface MenuTriggerProps {
   startIcon?: ReactNode;
   showChevron?: boolean;
   className?: string;
+  onClick: () => void;
 }
 
 export function MenuTrigger({
@@ -13,9 +14,10 @@ export function MenuTrigger({
   startIcon,
   showChevron = true,
   className = "",
+  onClick
 }: MenuTriggerProps) {
   return (
-    <button className={`flex items-center gap-2 ${className}`}>
+    <button className={`flex items-center gap-2 ${className}`} onClick={onClick}>
       {startIcon}
       {children}
       {showChevron && <ChevronRightIcon className="text-gray-600 ml-9" size={20} />}
