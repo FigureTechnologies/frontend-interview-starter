@@ -1,9 +1,47 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { Grid3x3Icon } from "./components/Grid3x3Icon";
 import { MenuTrigger } from "./components/MenuTrigger";
 
+type Data = {
+  id: string;
+  name: string;
+  createdAt: Date;
+}
+
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [data, setData] = useState<Data[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const isMountedRef = useRef(false);
+
+  async function fetchData(itemCount = 10) {
+    try {
+      setLoading(true);
+      const response = await fetch('../data.json');
+
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+
+      const responseData = await response.json();
+      setData(responseData.slice(0, itemCount));
+      setLoading(false);
+    } catch(e: unknown) {
+      setError(e.status)
+      setLoading(false);
+    }
+  }
+
+  // Fetch data on App load
+  useEffect(() => {
+    isMountedRef.current = true;
+    fetchData();
+
+    return () => {
+      isMountedRef.current = false;
+    }
+  }, [])
 
   return (
     <main className="min-h-screen w-screen bg-slate-200 flex justify-center items-center">
@@ -18,7 +56,11 @@ export function App() {
           </MenuTrigger>
         </div>
         <div className="col-span-2 h-96 bg-white border-4 border-l-0 p-6 flex justify-center items-center">
-          {isMenuOpen && <section>Menu</section>}
+          {isMenuOpen && (
+            <ul>{data && data.map(item => (
+              <li key={item.id}>{item.name}</li>
+            ))}</ul>
+          )}
         </div>
       </div>
     </main>
