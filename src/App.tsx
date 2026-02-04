@@ -4,48 +4,38 @@ import { MenuTrigger } from "./components/MenuTrigger";
 import { MenuContent } from "./components/MenuContent";
 import { Application } from "./types";
 
+const MENU_ITEM_COUNT = 10;
+
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [data, setData] = useState<Application[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(localStorage.getItem('selectedId') || '');
   const selectedApplication = data?.filter(item => item.id === selected).map(item => item.name);
   const menuRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<HTMLElement>(null);
 
-  // Fetch data on App load
   useEffect(() => {
-    const abortController = new AbortController();
-
-    async function fetchData(itemCount = 10) {
+    async function fetchData() {
       try {
         setLoading(true);
-        const response = await fetch('../data.json', {
-          signal: abortController.signal
-        });
+        const response = await fetch('/api/v1/applications');
 
         if (!response.ok) {
-          throw new Error('Network error');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const responseData = await response.json();
-        setData(responseData.slice(0, itemCount));
+        setData(responseData.applications.slice(0, MENU_ITEM_COUNT));
         setLoading(false);
       } catch (e: unknown) {
-        if (e instanceof Error && e.name === 'AbortError') {
-          return;
-        }
         setError(e instanceof Error ? e.message : 'An error occurred');
         setLoading(false);
       }
     }
 
     fetchData();
-
-    return () => {
-      abortController.abort();
-    };
   }, [])
 
   // Close menu on outside menu clicks
@@ -70,6 +60,11 @@ export function App() {
       }
     };
   }, [isMenuOpen]);
+
+  // Sync selected with local storage
+  useEffect(() => {
+    localStorage.setItem('selectedId', selected);
+  }, [selected])
 
   function handleSelectedClick(id: string) {
     setSelected(id);

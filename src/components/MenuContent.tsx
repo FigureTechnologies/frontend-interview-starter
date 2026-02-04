@@ -42,7 +42,7 @@ export const MenuContent = forwardRef<HTMLDivElement, MenuContentProps>(({
       <div className="px-4 py-3 border-b border-gray-100 flex-shrink-0">
         <h2 className="text-xs font-medium text-gray-500">{title}</h2>
       </div>
-      <ul className="py-2 list-none overflow-y-auto flex-1 space-y-1">
+      <ul className="py-2 list-none overflow-y-auto overflow-x-hidden flex-1 space-y-1">
         {items.map((item) => (
           <MenuItem
             key={item.id}
