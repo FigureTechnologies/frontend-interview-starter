@@ -10,39 +10,42 @@ export function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selected, setSelected] = useState('');
-  const isMountedRef = useRef(false);
   const selectedApplication = data?.filter(item => item.id === selected).map(item => item.name);
   const menuRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<HTMLElement>(null);
 
-  async function fetchData(itemCount = 10) {
-    try {
-      setLoading(true);
-      const response = await fetch('../data.json');
-
-      if (!response.ok) {
-        throw new Error('Network error');
-      }
-
-      const responseData = await response.json();
-      if (isMountedRef.current) {
-        setData(responseData.slice(0, itemCount));
-        setLoading(false);
-      }
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'An error occurred');
-      setLoading(false);
-    }
-  }
-
   // Fetch data on App load
   useEffect(() => {
-    isMountedRef.current = true;
+    const abortController = new AbortController();
+
+    async function fetchData(itemCount = 10) {
+      try {
+        setLoading(true);
+        const response = await fetch('../data.json', {
+          signal: abortController.signal
+        });
+
+        if (!response.ok) {
+          throw new Error('Network error');
+        }
+
+        const responseData = await response.json();
+        setData(responseData.slice(0, itemCount));
+        setLoading(false);
+      } catch (e: unknown) {
+        if (e instanceof Error && e.name === 'AbortError') {
+          return;
+        }
+        setError(e instanceof Error ? e.message : 'An error occurred');
+        setLoading(false);
+      }
+    }
+
     fetchData();
 
     return () => {
-      isMountedRef.current = false;
-    }
+      abortController.abort();
+    };
   }, [])
 
   // Close menu on outside menu clicks
