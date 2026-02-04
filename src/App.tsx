@@ -12,7 +12,9 @@ export function App() {
   const [selected, setSelected] = useState('');
   const isMountedRef = useRef(false);
   const selectedApplication = data?.filter(item => item.id === selected).map(item => item.name);
-  console.log(selectedApplication);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const appRef = useRef<HTMLElement>(null);
+
   async function fetchData(itemCount = 10) {
     try {
       setLoading(true);
@@ -23,10 +25,12 @@ export function App() {
       }
 
       const responseData = await response.json();
-      setData(responseData.slice(0, itemCount));
-      setLoading(false);
+      if (isMountedRef.current) {
+        setData(responseData.slice(0, itemCount));
+        setLoading(false);
+      }
     } catch (e: unknown) {
-      setError(e.status)
+      setError(e instanceof Error ? e.message : 'An error occurred');
       setLoading(false);
     }
   }
@@ -41,12 +45,35 @@ export function App() {
     }
   }, [])
 
-  function handleClick(id: string) {
+  // Close menu on outside menu clicks
+  useEffect(() => {
+    function handleMenuClose(e: MouseEvent) {
+      if (
+        menuRef.current &&
+        menuRef.current.contains(e.target as Node)
+      ) {
+        return;
+      }
+      setIsMenuOpen(false);
+    }
+
+    if (isMenuOpen && appRef.current) {
+      appRef.current.addEventListener('click', handleMenuClose);
+    }
+
+    return () => {
+      if (appRef.current) {
+        appRef.current.removeEventListener('click', handleMenuClose);
+      }
+    };
+  }, [isMenuOpen]);
+
+  function handleSelectedClick(id: string) {
     setSelected(id);
   }
 
   return (
-    <main className="min-h-screen w-screen bg-slate-200 flex flex-col justify-center items-center">
+    <main ref={appRef} className="min-h-screen w-screen bg-slate-200 flex flex-col justify-center items-center">
       {selected && <h1>Selected application: {selectedApplication}</h1>}
       <div className="max-w-2xl w-full grid grid-cols-3">
 
@@ -62,7 +89,7 @@ export function App() {
         <div className="col-span-2 h-96 bg-white border-4 border-l-0 p-6 flex justify-center items-start">
           {isMenuOpen && (
             <div className="w-full h-full overflow-y-auto p-2 animate-[fadeIn_0.2s_ease-out]">
-              <MenuContent items={data} loading={loading} error={error} onClick={handleClick} />
+              <MenuContent items={data} loading={loading} error={error} onClick={handleSelectedClick} ref={menuRef} selectedId={selected}/>
             </div>
           )}
         </div>
