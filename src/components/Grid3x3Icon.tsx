@@ -1,0 +1,27 @@
+interface Grid3x3IconProps {
+  className?: string;
+  size?: number;
+}
+
+export function Grid3x3Icon({ className, size = 16 }: Grid3x3IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <circle cx="3" cy="3" r="1.5" fill="currentColor" />
+      <circle cx="8" cy="3" r="1.5" fill="currentColor" />
+      <circle cx="13" cy="3" r="1.5" fill="currentColor" />
+      <circle cx="3" cy="8" r="1.5" fill="currentColor" />
+      <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+      <circle cx="13" cy="8" r="1.5" fill="currentColor" />
+      <circle cx="3" cy="13" r="1.5" fill="currentColor" />
+      <circle cx="8" cy="13" r="1.5" fill="currentColor" />
+      <circle cx="13" cy="13" r="1.5" fill="currentColor" />
+    </svg>
+  );
+}
