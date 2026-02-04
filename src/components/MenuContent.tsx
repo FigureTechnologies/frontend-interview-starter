@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckIcon } from './CheckIcon';
+import { MenuItem } from './MenuItem';
 
 interface MenuItem {
   id: string;
@@ -47,26 +47,15 @@ export function MenuContent({
         <h2 className="text-xs font-medium text-gray-500">{title}</h2>
       </div>
       <ul className="py-2 list-none overflow-y-auto flex-1 space-y-1">
-        {items.map((item) => {
-          const isSelected = selected === item.id;
-          return (
-            <li key={item.id} role="menuitem">
-              <button
-                onClick={() => handleClick(item.id)}
-                className={`w-full text-left pl-6 pr-4 py-3 flex items-center justify-between transition-colors ${
-                  isSelected
-                    ? "bg-gray-800 text-white rounded-md mx-1"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <span className="text-sm font-medium">{item.name}</span>
-                {isSelected && (
-                  <CheckIcon className="text-white ml-2" size={16} />
-                )}
-              </button>
-            </li>
-          );
-        })}
+        {items.map((item) => (
+          <MenuItem
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            isSelected={selected === item.id}
+            onClick={handleClick}
+          />
+        ))}
       </ul>
     </div>
   );
