@@ -1,16 +1,12 @@
 import {useState, useEffect, useRef} from 'react';
 import { Grid3x3Icon } from "./components/Grid3x3Icon";
 import { MenuTrigger } from "./components/MenuTrigger";
-
-type Data = {
-  id: string;
-  name: string;
-  createdAt: Date;
-}
+import { MenuContent } from "./components/MenuContent";
+import { Application } from "./types";
 
 export function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [data, setData] = useState<Data[] | null>(null);
+  const [data, setData] = useState<Application[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const isMountedRef = useRef(false);
@@ -57,9 +53,7 @@ export function App() {
         </div>
         <div className="col-span-2 h-96 bg-white border-4 border-l-0 p-6 flex justify-center items-center">
           {isMenuOpen && (
-            <ul>{data && data.map(item => (
-              <li key={item.id}>{item.name}</li>
-            ))}</ul>
+            <MenuContent items={data} loading={loading} error={error} />
           )}
         </div>
       </div>
