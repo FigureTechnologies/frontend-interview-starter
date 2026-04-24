@@ -13,4 +13,4 @@ When ready to submit, you can run `npm run zip`. This will create a folder on th
 
 ## Additional Instructions
 
-We value your time and do not require that you finish this exercise. Our goal is to understand your approach and skills. Thus, it can be really helpful to know what you considered in the take home. Please add your considerations to the file TAKE_HOME_CHOICES.md. This hopefully will help us to better understand you and your work.
+We value your time and do not require that you finish this exercise. Our goal is to understand your approach and skills. Thus, it can be really helpful to know what you considered in the take home. Please add your considerations to the file TAKE_HOME_CHOICES.md. This hopefully will help us better understand you and your work.
