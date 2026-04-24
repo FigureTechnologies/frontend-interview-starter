@@ -1,1 +1,0 @@
-## Please add considerations that may better help us understand your code, knowledge, and process below.
