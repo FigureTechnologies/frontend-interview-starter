@@ -10,3 +10,7 @@ The second command will bring up a dev server with a lightweight backend and a c
 ## Submitting
 
 When ready to submit, you can run `npm run zip`. This will create a folder on the same level as this one with an empty `node_modules` folder. Please replace `YOUR_NAME` in the filename with your name.
+
+## Additional Instructions
+
+We value your time and do not require that you finish this exercise. Our goal is to understand your approach and skills. Thus, it can be really helpful to know what you considered in the take home. Please add your considerations to the file TAKE_HOME_CHOICES.md. This hopefully will help us to better understand you and your work.
